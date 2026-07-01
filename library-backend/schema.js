@@ -20,6 +20,10 @@ const typeDefs = /* GraphQL */ `
     _resetDatabase: Boolean
   }
 
+  type Subscription {
+    bookAdded: Book!
+  }
+
   type Author {
     id: ID!
     name: String!

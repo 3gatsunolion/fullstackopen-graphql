@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client/react";
-import { ALL_AUTHORS } from "../queries";
+import { ALL_AUTHORS, ME } from "../queries";
 import EditAuthorForm from "./EditAuthorForm";
 
 const Authors = (props) => {
@@ -7,12 +7,18 @@ const Authors = (props) => {
     skip: !props.show,
   });
 
+  const { data: userData } = useQuery(ME);
+
   if (!props.show) {
     return null;
   }
 
   if (result.loading) {
     return <div>loading...</div>;
+  }
+
+  if (result.error) {
+    return <div>something happened :(</div>;
   }
 
   const authors = result.data.allAuthors;
@@ -36,7 +42,7 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
-      <EditAuthorForm authors={authors} />
+      {userData?.me?.username && <EditAuthorForm authors={authors} />}
     </div>
   );
 };

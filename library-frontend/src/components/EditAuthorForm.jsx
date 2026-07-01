@@ -2,15 +2,20 @@ import { useMutation } from "@apollo/client/react";
 import { useState } from "react";
 import { EDIT_AUTHOR_BORN } from "../queries";
 import useField from "../hooks/useField";
+import { useNotificationActions } from "../hooks/useNotification";
 
 const EditAuthorForm = ({ authors }) => {
   const [selectedAuthor, setSelectedAuthor] = useState("");
   const { reset: resetBorn, ...born } = useField("number");
+  const { showNotification } = useNotificationActions();
 
   // Don't need to refetch to update authors because Apollo Client
   // normalizes its cache, and because each author has an identifying field of type ID,
   // the author's details saved to the cache update automatically when they are changed with the mutation.
-  const [editAuthorBorn] = useMutation(EDIT_AUTHOR_BORN);
+  const [editAuthorBorn] = useMutation(EDIT_AUTHOR_BORN, {
+    onError: (e) =>
+      showNotification(`Could not edit author. ${e.message}`, true),
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,7 +35,7 @@ const EditAuthorForm = ({ authors }) => {
           <label>
             name
             <select
-              name="selectedAuthor"
+              name="name"
               value={selectedAuthor}
               onChange={(e) => setSelectedAuthor(e.target.value)}
             >

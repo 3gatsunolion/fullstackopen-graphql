@@ -12,11 +12,11 @@ const schema = new mongoose.Schema({
     type: Number,
     min: 0, // no negative numbers
   },
-  bookCount: {
-    type: Number,
-    min: 0,
-    default: 0,
-  },
+  // bookCount: {
+  //   type: Number,
+  //   min: 0,
+  //   default: 0,
+  // },
 });
 
 module.exports = mongoose.model("Author", schema);
